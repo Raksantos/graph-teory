@@ -59,7 +59,7 @@ void libera_grafo(Grafo *gr){
     }
 }
 
-int insereAresta(Grafo* gr, int origem, int destino, int eh_digrafo, int peso){
+int insereAresta(Grafo* gr, int origem, int destino, int eh_digrafo, float peso){
     if(gr == NULL) return 0;
 
     if(origem < 0 || origem >= gr->nro_vertices) return 0;
@@ -76,36 +76,6 @@ int insereAresta(Grafo* gr, int origem, int destino, int eh_digrafo, int peso){
 
     if(eh_digrafo == 0){
         insereAresta(gr, destino, origem, 1, peso);
-    }
-
-    return 1;
-}
-
-int removeAresta(Grafo* gr, int origem, int destino, int eh_digrafo){
-    if(gr == NULL) return 0;
-
-    if(origem < 0 || origem >= gr->nro_vertices) return 0;
-
-    if(destino < 0 || destino >= gr->nro_vertices) return 0;
-
-    int i = 0;
-
-    while(i < gr->grau[origem] && gr->arestas[origem][i] != destino){
-        i++;
-    }
-
-    if(i == gr->grau[origem]){
-        return 0;
-    }
-
-    gr->grau[origem]--;
-    gr->arestas[origem][i] = gr->arestas[origem][gr->grau[origem]];
-    if(gr->eh_ponderado){
-        gr->pesos[origem][i] = gr->pesos[origem][gr->grau[origem]];
-    }
-
-    if(eh_digrafo == 0){
-        removeAresta(gr, destino, origem, 1);
     }
 
     return 1;
