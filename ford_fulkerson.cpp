@@ -17,7 +17,7 @@ struct graph
 bool bfs(Graph g, vvi residual, int begin, int end, int parent[])
 {
     bool visited[g.V];
-    memset(visited, false, sizeof(bool) * g.V);
+    memset(visited, false, sizeof(bool) * g.V);//setta todo o vetor de visitados como falso
     visited[begin] = true;
     queue<int> q;
     q.push(begin);
@@ -51,7 +51,7 @@ int ford_fulkerson(Graph g, int begin, int end)
     for(int i = 0; i < g.V; i++){
         residual[i].resize(g.V);
         for(int j = 0; j < g.V; j++){
-            residual[i][j] = g.adj_list[i][j];
+            residual[i][j] = g.adj_list[i][j]; // atribui todos os pesos das arestas ao vertor residual
         }
     }
 
@@ -63,7 +63,7 @@ int ford_fulkerson(Graph g, int begin, int end)
 			path = (residual[u][v] < path)? residual[u][v] : path;
 		}
 
-		for( v = end; v != begin;v = parent[v]){
+		for( v = end; v != begin; v = parent[v]){
 			u = parent[v];
 			residual[u][v] -= path;
 			residual[v][u] += path;
