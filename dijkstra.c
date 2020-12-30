@@ -4,6 +4,7 @@
 
 struct grafo{
     int eh_ponderado;
+    int eh_digrafo;
     int nro_vertices;
     int grau_max;
     int** arestas;
@@ -11,7 +12,7 @@ struct grafo{
     int* grau;
 };
 
-Grafo *cria_grafo(int nro_vertices, int grau_max, int eh_ponderado){
+Grafo *cria_grafo(int nro_vertices, int grau_max, int eh_ponderado, int eh_digrafo){
     Grafo *gr = (Grafo*) malloc(sizeof(struct grafo));
 
     if(gr != NULL){
@@ -19,6 +20,7 @@ Grafo *cria_grafo(int nro_vertices, int grau_max, int eh_ponderado){
         gr->nro_vertices = nro_vertices;
         gr->grau_max = grau_max;
         gr->eh_ponderado = eh_ponderado;
+        gr->eh_digrafo = eh_digrafo;
 
         gr->grau = (int*) calloc(nro_vertices, sizeof(int));
 
@@ -59,7 +61,7 @@ void libera_grafo(Grafo *gr){
     }
 }
 
-int insereAresta(Grafo* gr, int origem, int destino, int eh_digrafo, float peso){
+int insereAresta(Grafo* gr, int origem, int destino, int peso){
     if(gr == NULL) return 0;
 
     if(origem < 0 || origem >= gr->nro_vertices) return 0;
@@ -74,8 +76,12 @@ int insereAresta(Grafo* gr, int origem, int destino, int eh_digrafo, float peso)
 
     gr->grau[origem]++;
 
-    if(eh_digrafo == 0){
-        insereAresta(gr, destino, origem, 1, peso);
+    if(gr->eh_digrafo == 0) {
+        gr->arestas[destino][gr->grau[destino]] = origem;
+        if(gr->eh_ponderado){
+            gr->pesos[destino][gr->grau[destino]] = peso;
+        }
+        gr->grau[destino]++;
     }
 
     return 1;
@@ -165,50 +171,56 @@ void printaGrafo(Grafo *gr, int nro_vertices){
 }
 
 int main(){
-    int i, eh_digrafo = 0, numero_vertices = 6, grau_maximo = 4, eh_ponderado = 1;
-    Grafo *gr = cria_grafo(numero_vertices, grau_maximo, eh_ponderado);
-    
-    insereAresta(gr, 0, 1, eh_digrafo, 1);
-    insereAresta(gr, 0, 2, eh_digrafo, 9);
-    insereAresta(gr, 0, 5, eh_digrafo, 14);
-    insereAresta(gr, 1, 2, eh_digrafo, 10);
-    insereAresta(gr, 1, 3, eh_digrafo, 15);
-    insereAresta(gr, 3, 2, eh_digrafo, 11);
-    insereAresta(gr, 3, 4, eh_digrafo, 6);
-    insereAresta(gr, 4, 5, eh_digrafo, 9);
-    insereAresta(gr, 2, 5, eh_digrafo, 2);
+    int numero_vertices, grau_maximo, numero_arestas, eh_digrafo;
+    scanf("%d %d %d %d", &numero_vertices, &grau_maximo, &numero_arestas, &eh_digrafo);
+
+    // para dijkstra, assumimos que o grafo é ponderado
+    Grafo *gr = cria_grafo(numero_vertices, grau_maximo, 1, eh_digrafo);
+
+    int origem, objetivo;
+    scanf("%d %d", &origem, &objetivo);
+
+    int i, v1, v2, peso;
+    for(i = 0; i < numero_arestas; i++) {
+        scanf("%d %d %d", &v1, &v2, &peso);
+        insereAresta(gr, v1, v2, peso);
+    }
 
     int ant[numero_vertices];
     int dist[numero_vertices];
-    int origem = 2, objetivo = 4, contador = numero_vertices - 1;
+    int contador = numero_vertices - 1;
 
-    for(i = 0; i < 6; i++){
+    for(i = 0; i < numero_vertices; i++){
         ant[i] = -1;
     }
 
     dijkstra(gr, origem, ant, dist);
 
     int caminho[numero_vertices];
-    for(i = 0; i < 6; i++){
+    for(i = 0; i < numero_vertices; i++){
         caminho[i] = -1;
     }
 
-    printf("%d ->", origem);
-
     while(objetivo != origem){
+        if(contador < 0 || objetivo < 0) {
+            printf("Não existe caminho\n");
+            return 0;
+        }
         caminho[contador] = objetivo;
         objetivo = ant[objetivo];
         contador--;
     }
 
-    for(i = 0; i < 6; i++){
+    printf("%d ->", origem);
+    for(i = 0; i < numero_vertices; i++){
         if(caminho[i] != -1){
             printf(" %d", caminho[i]);
-            if(i + 1 != 6){
+            if(i + 1 != numero_vertices){
                 printf(" ->");   
             }
         }
     }
+    printf("\n");
 
     libera_grafo(gr);
 
