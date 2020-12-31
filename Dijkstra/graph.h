@@ -1,7 +1,17 @@
+struct grafo{
+    int eh_ponderado;
+    int eh_digrafo;
+    int nro_vertices;
+    int grau_max;
+    int** arestas;
+    int** pesos;
+    int* grau;
+};
+
 typedef struct grafo Grafo;
 
 Grafo *cria_grafo(int nro_vertices, int grau_max, int eh_ponderado, int eh_digrafo);
-int removeAresta(Grafo* gr, int origem, int destino, int eh_digrafo);
-int insereAresta(Grafo* gr, int origem, int destino, int peso);
+int remove_aresta(Grafo* gr, int origem, int destino, int eh_digrafo);
+int insere_aresta(Grafo* gr, int origem, int destino, int peso);
 void libera_grafo(Grafo *gr);
-void printaGrafo(Grafo *gr, int nro_vertices);
+void printa_grafo(Grafo *gr, int nro_vertices);
