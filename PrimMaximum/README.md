@@ -2,7 +2,7 @@
 
 ## Compilando
 ```
-gcc operators.cpp heap.cpp prim.cpp main.cpp -o prim -lstdc++
+make prim
 ```
 
 ## Entrada
@@ -34,4 +34,21 @@ Exemplo contido no arquivo `prim.in`, para um grafo de 6 vértices e 7 arestas c
 
 ```
 ./prim < prim.in
+```
+
+## Saída
+
+A saída será composta de **n** linhas, cada uma no formato `v pai: u` indicando, para cada vértice `v` do grafo, qual seria seu vértice pai (`u`) na árvore geradora máxima. Note que o vértice inicial não possui pai (`-1`), pois a árvore é enraízada nele.
+
+### Exemplo
+
+A saída para o algoritmo executado sobre o grafo de entrada apresentado no arquivo `prim.in` seria:
+
+```
+0 pai: -1
+1 pai: 0
+2 pai: 0
+3 pai: 1
+4 pai: 1
+5 pai: 4
 ```

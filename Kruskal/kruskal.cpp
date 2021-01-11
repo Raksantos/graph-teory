@@ -1,5 +1,7 @@
 #include <iostream>
-#include <bits/stdc++.h>
+#include <algorithm>
+#include <utility>
+#include <vector>
 using namespace std;
 
 
@@ -67,11 +69,7 @@ int main(){
 
     Graph g;
 
-    printf("Informe o numero de vertices: ");
-    scanf("%d", &g.V);
-
-    printf("Informe o numero de arestas: ");
-    scanf("%d", &g.E);
+    scanf("%d%d", &g.V, &g.E);
 
     g.adj_list.resize(g.V);
 	parent.resize(g.V);

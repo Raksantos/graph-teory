@@ -79,11 +79,8 @@ int main(){
     Graph g;
     int vertex1, vertex2, weight, begin, end;
 
-    printf("Informe o numero de vertices do grafo: ");
-    scanf("%d", &g.V);
-
-    printf("Informe o numero de arestas do grafo: ");
-    scanf("%d", &g.E);
+    scanf("%d%d", &g.V, &g.E);
+    scanf("%d%d", &begin, &end);
 
     g.adj_list.resize(g.V);
 
@@ -92,20 +89,12 @@ int main(){
     }
 
     for (int i = 0; i < g.E; i++){
-
-        printf("Informe o primeiro vertice, segundo vertice e peso da aresta: ");
         scanf("%d%d%d", &vertex1, &vertex2, &weight);
 
         g.adj_list[vertex1][vertex2] = weight;
     }
 
-    printf("Informe o vertice inicial: ");
-    scanf("%d", &begin);
-
-    printf("Informe o vertice final: ");
-    scanf("%d", &end);
-
-    printf("O fluxo maximo desse grafo eh: %d", ford_fulkerson(g, begin, end));
+    printf("O fluxo maximo desse grafo eh: %d\n", ford_fulkerson(g, begin, end));
 
     return 0;
 }
